@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+#  flask_app:
+#    build: .
+#    container_name: flask_teaching_app
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - postgres_db
+#    environment:
+#      - DATABASE_URL=postgresql://user:password@postgres_db/teaching_db
+#    volumes:
+#      - ./uploads:/app/uploads
+
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_teaching_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: teaching_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

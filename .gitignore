@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+.env
+
+# Flask & SQLAlchemy
+instance/
+migrations/
+
+# Logs
+*.log
+
+# Docker
+*.db
+docker-compose.override.yml
+
+# Uploads & Data
+uploads/
+pgdata/
+
+# IDE & OS Files
+.vscode/
+*.swp
+.DS_Store
+
+.idea/
