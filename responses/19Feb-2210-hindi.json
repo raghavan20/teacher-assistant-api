@@ -1,0 +1,122 @@
+{
+  "prompt": "\n    You are a teacher's helpful assistant that listens to a teacher delivering a lesson to a classroom through an audio \n    recording and gives helpful suggestions of how the teacher has performed in the lesson based on the requirements of \n    pedagogy, lesson plan, other teaching guidelines given to the teacher during training. Remember that the purpose of \n    this feedback is to encourage teachers to improve and not to make them feel bad about not meeting all the \n    standards set for them because it is not possible to meet all requirements in each class.\n    \n    For the audio recording, do the following:\n    1. First, create a lesson outline with concise bullet points summarizing events, activities of the lesson in the audio recording.\n    2. Then, analyze the recording based on the pedagogy guidelines and create pedagogy_metrics as given in the output JSON structure.\n    3. Then, analyze the recording based on the lesson plan and create lesson_plan_metrics as given in the output JSON structure.\n    4. Then, analyze the recording based on the teaching guidelines and teaching_guidelines_metrics as given in the output JSON structure.\n    \n    For the given audio recording from a grade 4 classroom where the teacher is teaching a hindi lesson on \n    the topic of nouns, analyze the audio and return structured output in JSON. The structure of the JSON is given \n    below.\n    \n    Lesson Plan: \n    1. What is the definition of a noun? \n2. Identify nouns of things around you. \n3 Identify Noun in a sentence. \n4 What are examples of Noun? \n5. Construct sentences using one or more Nouns that are given to the student.\n6. Identify nouns in a short 4-6 line poem\n    \n    Pedagogy Structure: \n    \n    The 5E's instructional model is a research-based framework designed to facilitate inquiry-based learning and promote a deeper understanding of concepts. Each phase of the model\u2014Engage, Explore, Explain, Elaborate, and Evaluate\u2014plays a vital role in the teaching and learning process.\n    1. Engage: The engage phase aims to capture students' attention and generate interest in the topic. It involves activities or discussions that activate prior knowledge, stimulate curiosity, and create a connection between the students' experiences and the new concepts being taught.\n    2. Explore: In the explore phase, students actively participate in hands-on activities, investigations, and experiments. They explore the mathematical concepts, make observations, ask questions, and collect data. This phase encourages students to develop critical thinking skills, engage in problem-solving, and discover patterns and relationships.\n    3. Explain: The explain phase focuses on providing explanations, clarifying concepts, and developing a deeper understanding. Teachers facilitate discussions, present mathematical principles, and guide students in making connections between their observations and the underlying mathematical concepts.\n    4. Elaborate: In the elaborate phase, students apply their understanding of the concepts in real-life contexts. They engage in extended activities, solve complex problems, and work on projects that require higher-order thinking skills. This phase encourages students to explore mathematics beyond the classroom and strengthens their problem-solving abilities.\n    5. Evaluate: The evaluate phase involves assessing students' learning outcomes and understanding. Various assessment strategies, including formative and summative assessments, are used to measure students' progress and provide feedback for further improvement.\n    \n    \n    Teaching Guidelines: \n    \n    1. Give at least two examples for each concept.\n    2. Repeat each concept at least once.\n    3. Make students answer questions on all topics.\n    \n    \n    Output JSON Structure:\n    {\n        \"lesson_outline\": [list of concise bullet points summarizing the events of the lesson in the audio recording],\n        \"pedagogy_metrics\":\n        {\n            \"is_pedagogy_structure_followed\": <boolean that is true if elements of the pedagogy structure are present in the lesson - not all can be present in a single lesson>,\n            \"engagement_score\": <integer between 0 and 3 where 3 is the highest level of engagement of students according to \"Engage\" step of pedagogy guidelines>,\n            \"reason_for_engagement_score\": <string with concise one sentence reason for the engagement_score given>,\n            \"explore_score\": <integer between 0 and 3 where 3 is the highest level of exploration of students through activities according to the \"Explore\" step of pedagogy guidelines>,\n            \"reason_for_explore_score\": <string with concise one sentence reason for the explore_score given>,\n            \"explain_score\": <integer between 0 and 3 where 3 is the highest level of clarity for students according to the \"Explain\" step of pedagogy guidelines>,\n            \"reason_for_explain_score\": <string with concise one sentence reason for the explain_score given>,\n            \"elaborate_score\": <integer between 0 and 3 where 5 is the highest level of elaboration for students according to the \"Elaborate\" step of pedagogy guidelines>,\n            \"reason_for_elaborate_score\": <string with concise one sentence reason for the elaborate_score given>,\n            \"evaluate_score\": <integer between 0 and 3 where 5 is the highest quality of assessment for student according to the \"Evaluate\" step of pedagogy guidelines>,\n            \"reason_for_evaluate_score\": <string with concise one sentence reason for the evaluate_score given>,\n            \"pedagogy_suggestions\": [list of at most 2 specific suggestions where the teacher could have introduced an activity, example, question, or teaching method to improve the lesson experience for students],\n        },\n        \"lesson_plan_metrics\":\n        {\n            \"list_of_topics_covered\": [list topics covered by the teacher during the class in the lesson plan],\n            \"list_of_all_topics\": [list with number of total topics in the lesson plan],\n            \"list_of_excellent_topics\": [list of topics with excellent presentation by the teacher],\n            \"list_of_good_topics\": [list of topics with decent presentation by the teacher with some room for improvement],\n            \"list_of_poor_topics\": [list of topics that had poor presentation by the teacher with lots of room for improvement]\n        },\n        \"teaching_guidelines_metrics\":\n        {\n            \"list_of_guidelines_exhibited\": [list of guidelines exhibited by the teacher during the class],\n            \"list_of_all_guidelines\": [list of all guidelines recommended in the given teaching guidelines list],\n            \"list_of_excellent_guidelines\": [list of guidelines followed by the teacher consistently in the lesson],\n            \"list_of_good_guidelines\": [list of guidelines exhibited once or twice in the lesson but could be more consistently exhibited],\n            \"list_of_poor_guidelines\": [list of guidelines exhibited not exhibited or exhibited poorly by the teacher in the lesson],\n        }\n    }        \n    ",
+  "predictions": {
+    "lesson_outline": [
+      "Teacher introduces the topic of nouns (Sangya).",
+      "Teacher explains the definition of a noun.",
+      "Teacher asks students to identify nouns in their surroundings.",
+      "Teacher provides examples of nouns.",
+      "Teacher asks students to give examples of nouns.",
+      "Teacher explains how to identify nouns in sentences.",
+      "Teacher gives sentences and asks students to identify nouns.",
+      "Teacher discusses different types of nouns (not explicitly detailed).",
+      "Teacher assigns homework to write 5 sentences using nouns."
+    ],
+    "pedagogy_metrics": {
+      "is_pedagogy_structure_followed": true,
+      "engagement_score": 2,
+      "reason_for_engagement_score": "The teacher attempts to engage students by asking questions and prompting them to identify nouns around them, but there is limited active engagement demonstrated in the audio.",
+      "explore_score": 1,
+      "reason_for_explore_score": "Students are asked to identify nouns in their surroundings, which provides a minimal level of exploration, but no hands-on activities are apparent.",
+      "explain_score": 3,
+      "reason_for_explain_score": "The teacher clearly explains the definition of a noun and provides examples, contributing to a good understanding of the concept.",
+      "elaborate_score": 1,
+      "reason_for_elaborate_score": "The lesson lacks activities that extend the application of nouns in real-life contexts or complex problem-solving scenarios.",
+      "evaluate_score": 2,
+      "reason_for_evaluate_score": "The teacher assesses understanding by asking students to identify nouns in sentences and providing examples, but a more comprehensive evaluation strategy could be implemented.",
+      "pedagogy_suggestions": [
+        "Incorporate a short game where students act out nouns or draw them to enhance engagement and exploration.",
+        "Introduce a short story or poem and have students collaboratively identify all the nouns, promoting deeper understanding and application."
+      ]
+    },
+    "lesson_plan_metrics": {
+      "list_of_topics_covered": [
+        "Definition of a noun",
+        "Identify nouns of things around you",
+        "Identify Noun in a sentence",
+        "Examples of Noun"
+      ],
+      "list_of_all_topics": [
+        "What is the definition of a noun?",
+        "Identify nouns of things around you.",
+        "Identify Noun in a sentence.",
+        "What are examples of Noun?",
+        "Construct sentences using one or more Nouns that are given to the student.",
+        "Identify nouns in a short 4-6 line poem"
+      ],
+      "list_of_excellent_topics": [
+        "Definition of a noun",
+        "Examples of Noun"
+      ],
+      "list_of_good_topics": [
+        "Identify nouns of things around you",
+        "Identify Noun in a sentence"
+      ],
+      "list_of_poor_topics": [
+        "Construct sentences using one or more Nouns that are given to the student.",
+        "Identify nouns in a short 4-6 line poem"
+      ]
+    },
+    "teaching_guidelines_metrics": {
+      "list_of_guidelines_exhibited": [
+        "Give at least two examples for each concept.",
+        "Make students answer questions on all topics."
+      ],
+      "list_of_all_guidelines": [
+        "Give at least two examples for each concept.",
+        "Repeat each concept at least once.",
+        "Make students answer questions on all topics."
+      ],
+      "list_of_excellent_guidelines": [
+        "Give at least two examples for each concept.",
+        "Make students answer questions on all topics."
+      ],
+      "list_of_good_guidelines": [],
+      "list_of_poor_guidelines": [
+        "Repeat each concept at least once."
+      ]
+    }
+  },
+  "metrics": {
+    "pedagogy_score": 76,
+    "pedagogy_strengths": [
+      0,
+      2,
+      4
+    ],
+    "pedagogy_areas_of_improvements": [],
+    "no_topics_covered": 4,
+    "total_no_topics": 6,
+    "missed_topics": [
+      "What is the definition of a noun?",
+      "Identify nouns of things around you.",
+      "Identify Noun in a sentence.",
+      "What are examples of Noun?",
+      "Construct sentences using one or more Nouns that are given to the student.",
+      "Identify nouns in a short 4-6 line poem"
+    ],
+    "lesson_quality_score": 82.0,
+    "teaching_guidelines_score": 88.0,
+    "teaching_guidelines_strengths": [
+      "Give at least two examples for each concept.",
+      "Make students answer questions on all topics."
+    ],
+    "teaching_guidelines_areas_of_improvement": [
+      "Repeat each concept at least once."
+    ],
+    "teaching_guidelines_missed": [
+      "Repeat each concept at least once."
+    ],
+    "overall_score": 91.0
+  },
+  "suggestions": [
+    {
+      "title": "Incorporate Noun Charades for Active Engagement",
+      "description": "Introduce a short game where students act out nouns (e.g., 'teacher,' 'dog,' 'book') or draw them. This enhances engagement and exploration of the concept in a fun, interactive way."
+    },
+    {
+      "title": "Analyze a Poem for Noun Identification",
+      "description": "Use a short Hindi poem and have students collaboratively identify all the nouns within it. This promotes deeper understanding and practical application of noun identification skills."
+    }
+  ]
+}
