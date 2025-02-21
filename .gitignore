@@ -30,3 +30,4 @@ pgdata/
 
 .idea/
 recordings
+secret.yaml
