@@ -1,10 +1,14 @@
-# Flask Teaching App
+# Flask Teaching Assistance App
 
 This Flask application allows teachers to upload lecture recordings, analyze them using an LLM, and retrieve useful educational content.
 
 ## Prerequisites
 - Docker & Docker Compose installed
-- Python 3.8+
+- Python 3.10
+
+```
+mkvirtualenv -p $(which python3.10) teacher-assistant-api
+```
 
 ## Setup and Running
 
@@ -24,13 +28,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-### API Endpoints
-- `POST /upload` - Upload an audio recording
-- `GET /audio/<id>` - Stream an audio file
-- `GET /news?subject=<subject>` - Fetch relevant news
-- `GET /quiz?subject=<subject>` - Retrieve a quiz
-- `GET /articles?subject=<subject>` - Fetch articles
-- `GET /stats/<teacher_id>` - Get performance statistics
 
 ### Stop Services
 ```sh
@@ -39,7 +36,7 @@ docker-compose down
 
 ### Next Steps
 
-- Host in Heroku
+- Host with Railway
 - Extract any configs to envs
 - Link to Gemini for a few routes
 

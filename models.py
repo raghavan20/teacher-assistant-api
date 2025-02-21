@@ -19,6 +19,6 @@ class Recording(Registry.s_db.Model):
     r_suggestions_count = Column(Integer, nullable=True)
     r_topics_required = Column(Integer, nullable=True)
     r_topics_covered = Column(Integer, nullable=True)
-    r_structure = Column(Float, nullable=True)
-    r_depth = Column(Float, nullable=True)
-    r_style = Column(Float, nullable=True)
+    r_structure = Column(Float, nullable=True) # pedagogy_score
+    r_depth = Column(Float, nullable=True) # lesson_quality_score
+    r_style = Column(Float, nullable=True) # teaching_guidelines_score

@@ -1,6 +1,4 @@
-from flask import Flask, request, jsonify, send_file
-from datetime import datetime
-from db_init import init_db
+from flask import Flask, request, jsonify
 from db_utils import *
 app = Flask(__name__)
 db = create_db(app)
@@ -8,7 +6,7 @@ Registry.s_db = db
 
 from models import *
 from utils import Registry
-from analyzer import RecordingAnalyzer
+from analysis.analyzer import RecordingAnalyzer
 analyzer = RecordingAnalyzer()
 
 
@@ -64,7 +62,7 @@ def upload_recording():
 
     recording = analyzer.analyze(new_recording)
 
-    Registry.s_db.session.add(recording )
+    Registry.s_db.session.add(recording)
     Registry.s_db.session.commit()
 
     return jsonify({"message": "Recording uploaded successfully", "recording_id": new_recording.id}), 201
