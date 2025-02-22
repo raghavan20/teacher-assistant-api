@@ -3,10 +3,11 @@ from db_utils import *
 app = Flask(__name__)
 db = create_db(app)
 Registry.s_db = db
-
+from flask_cors import CORS
 from models import *
 from utils import Registry
 from analysis.analyzer import RecordingAnalyzer
+CORS(app)
 analyzer = RecordingAnalyzer()
 
 
