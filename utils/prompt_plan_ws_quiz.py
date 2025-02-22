@@ -1,7 +1,7 @@
 from utils.prompt_generation_methods import _get_pedagogy, _get_lesson_plan, _get_teaching_guidelines
 
 
-class content_prompt:
+class ContentPrompt:
     def __init__(self, grade: int, subject: str, topic: str, state: str = 'karnataka',
                  board: str = 'CBSE', district: str = 'Bengaluru',
                  block: str = 'Mahadevpura', language: str = 'english') -> None:
@@ -124,38 +124,11 @@ class content_prompt:
         )
         return prompt
 
-    def create_activity_prompt(self):
-        template = '''
 
-        You are a classroom activity generator, who generates an interesting classroom activity given class, subject,
-        topic and language considering it is for schools in rural india with limited access to technology and fancy activity items.
-
-        Generate one classroom activity  for grade {grade} for {subject} on 
-        {topic} in {language} language. 
-
-        Keep the outputs strictly as below output_format_json format
-
-        output_format_json:
-        {{
-        "activity_name" : "A short name",
-        "material_needed" : "list materials required keeping rural india in consideration"
-        "description" "activity details"
-        }}   
-
-        '''
-
-        prompt = template.format(
-            grade=self.grade,
-            subject=self.subject,
-            topic=self.topic,
-            language=self.language
-        )
-
-        return prompt
 
 
 if __name__ == "__main__":
-    cp = content_prompt(grade=4, subject="mathematics", topic="Like Fraction Addition")
+    cp = ContentPrompt(grade=4, subject="mathematics", topic="Like Fraction Addition")
     # prompt = cp.create_lesson_plan_prompt(class_duration=30)
     prompt = cp.create_activity_prompt()
     print(prompt)

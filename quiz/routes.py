@@ -2,7 +2,7 @@ from models import *
 from flask import request, jsonify, Blueprint
 from utils.utils import get_logger
 from utils.gemini_api_methods import initialize_model, upload_file, delete_all_files
-from utils.prompt_plan_ws_quiz import content_prompt
+from utils.prompt_plan_ws_quiz import ContentPrompt
 import json
 
 
@@ -10,31 +10,7 @@ logger = get_logger()
 quiz_routes = Blueprint("worksheet_routes", __name__, url_prefix="/")
 
 @quiz_routes.route('/recordings/<int:recording_id>/quiz', methods=['POST'])
-def generate_activity(recording_id):
-    res = [
-        {
-            "q": "What is the capital of India?",
-            "a": "New Delhi",
-            "options": [ "New Delhi", "Paris", "London", "Tokyo"]
-        },
-        {
-            "q": "What is the capital of France?",
-            "a": "Paris",
-            "options": ["New Delhi", "Paris", "London", "Tokyo"]
-        },
-        {
-            "q": "What is the capital of Japan?",
-            "a": "Tokyo",
-            "options": ["New Delhi", "Paris", "London", "Tokyo"]
-        },
-        {
-            "q": "What is the capital of UK?",
-            "a": "London",
-            "options": ["New Delhi", "Paris", "London", "Tokyo"]
-        },
-    ]
-
-
+def quiz_route(recording_id):
     if recording_id:
         recording = Recording.query.with_entities(
             Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
@@ -60,10 +36,10 @@ def generate_quiz(recording: Recording):
                              top_k=5,
                              top_p=0.5)
     try:
-        cp = content_prompt(grade=recording.grade,
-                            subject=recording.subject,
-                            topic=recording.r_topics_covered,
-                            language=recording.language)
+        cp = ContentPrompt(grade=recording.grade,
+                           subject=recording.subject,
+                           topic=recording.r_topics_covered,
+                           language=recording.language)
 
         prompt = cp.create_quiz_prompt(quiz_questions_numbers=5)
 

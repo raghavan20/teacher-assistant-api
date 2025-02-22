@@ -216,58 +216,6 @@ def search_recordings():
     return jsonify(recordings_list), 200
 
 
-# @app.route('/recordings/<int:recording_id>/quiz', methods=['GET'])
-# def generate_quiz(recording_id):
-#
-#     if recording_id:
-#         recording = Recording.query.with_entities(
-#             Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
-#             Recording.language, Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
-#             Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
-#             Recording.r_depth, Recording.r_style
-#         ).filter_by(id=recording_id).first()
-#
-#         if not recording:
-#             return jsonify({"error": "Recording not found"}), 404
-#
-#         quiz = analyzer.generate_quiz(recording)
-#
-#         response = {
-#             "recording_id": recording_id,
-#             "quiz": quiz
-#         }
-#         return jsonify(response), 200
-#
-#     else:
-#         return jsonify({"error": "Invalid recording_id"}), 400
-
-
-@app.route('/recordings/<int:recording_id>/activity', methods=['GET'])
-def generate_activity(recording_id):
-
-    if recording_id:
-        recording = Recording.query.with_entities(
-            Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
-            Recording.language, Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
-            Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
-            Recording.r_depth, Recording.r_style
-        ).filter_by(id=recording_id).first()
-
-        if not recording:
-            return jsonify({"error": "Recording not found"}), 404
-
-        activity = analyzer.generate_activity(recording)
-
-        response = {
-            "recording_id": recording_id,
-            "activity": activity
-        }
-        return jsonify(response), 200
-
-    else:
-        return jsonify({"error": "Invalid recording_id"}), 400
-
-
 @app.route('/stats/users/<int:user_id>', methods=['GET'])
 def get_user_stats(user_id):
     # Query total lesson interactions
@@ -305,8 +253,9 @@ if __name__ == '__main__':
     init_db(app, Registry.s_db)
 
     from quiz.routes import quiz_routes
+    from activity.routes import activity_routes
 
-    blueprints = [quiz_routes]
+    blueprints = [quiz_routes, activity_routes]
 
     for bp in blueprints:
         app.register_blueprint(bp)

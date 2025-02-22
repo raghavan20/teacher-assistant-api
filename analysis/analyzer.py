@@ -5,7 +5,7 @@ from pprint import pformat
 from utils.gemini_api_methods import initialize_model, upload_file, delete_all_files
 from analysis.metrics import get_dashboard_metrics
 from utils.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
-from utils.prompt_plan_ws_quiz import content_prompt
+from utils.prompt_plan_ws_quiz import ContentPrompt
 from utils.utils import get_logger
 
 logger = get_logger()
@@ -61,45 +61,3 @@ class RecordingAnalyzer:
             logger.error("Exception occurred while analyzing recording", exc_info=True)
 
         return recording
-
-    # def generate_quiz(self, recording: Recording):
-    #
-    #     model = initialize_model(name='gemini-2.0-flash',
-    #                              temperature=0.1,
-    #                              top_k=5,
-    #                              top_p=0.5)
-    #     try:
-    #         cp = content_prompt(grade=recording.grade,
-    #                             subject=recording.subject,
-    #                             topic=recording.r_topics_covered,
-    #                             language=recording.language)
-    #
-    #         prompt = cp.create_quiz_prompt(quiz_questions_numbers=5)
-    #
-    #         result = model.generate_content(prompt)
-    #         result_dict = json.loads(result.text)
-    #
-    #         return result_dict
-    #
-    #     except Exception as e:
-    #         print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))
-
-    def generate_activity(self, recording: Recording):
-
-        model = initialize_model(name='gemini-2.0-flash',
-                                 temperature=0.1,
-                                 top_k=5,
-                                 top_p=0.5)
-        try:
-            cp = content_prompt(grade=recording.grade, subject=recording.subject,
-                                topic=recording.r_topics_covered, language=recording.language)
-
-            prompt = cp.create_activity_prompt()
-
-            result = model.generate_content(prompt)
-            result_dict = json.loads(result.text)
-
-            return result_dict
-
-        except Exception as e:
-            print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))
