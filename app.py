@@ -95,6 +95,7 @@ def get_recording_blob(recording_id):
     # Return the response with correct headers
     return Response(audio_bytes, mimetype=mime_type)
 
+
 @app.route('/recordings/<int:recording_id>', methods=['GET'])
 def get_recording(recording_id):
     recording = Recording.query.with_entities(
@@ -139,6 +140,7 @@ def upload_recording():
     subject = request.form.get('subject')
     grade = request.form.get('grade')
     user_id = request.form.get('user_id')
+    language = request.form.get('language')
     analyze = request.form.get('analyze', 'true').lower() == 'true'
 
     if not subject or not grade or not user_id:
@@ -149,7 +151,8 @@ def upload_recording():
         recording_blob=file.read(),
         user_id=int(user_id),
         subject=subject,
-        grade=grade
+        grade=grade,
+        language=language
     )
 
     if analyze:
@@ -207,6 +210,58 @@ def search_recordings():
     ]
 
     return jsonify(recordings_list), 200
+
+
+@app.route('/recordings/<int:recording_id>/worksheet', methods=['GET'])
+def generate_worksheet(recording_id):
+
+    if recording_id:
+        recording = Recording.query.with_entities(
+            Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
+            Recording.language, Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
+            Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
+            Recording.r_depth, Recording.r_style
+        ).filter_by(id=recording_id).first()
+
+        if not recording:
+            return jsonify({"error": "Recording not found"}), 404
+
+        worksheet = analyzer.generate_worksheet(recording)
+
+        response = {
+            "recording_id": recording_id,
+            "worksheet": worksheet
+        }
+        return jsonify(response), 200
+
+    else:
+        return jsonify({"error": "Invalid recording_id"}), 400
+
+
+@app.route('/recordings/<int:recording_id>/worksheet', methods=['GET'])
+def generate_activity(recording_id):
+
+    if recording_id:
+        recording = Recording.query.with_entities(
+            Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
+            Recording.language, Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
+            Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
+            Recording.r_depth, Recording.r_style
+        ).filter_by(id=recording_id).first()
+
+        if not recording:
+            return jsonify({"error": "Recording not found"}), 404
+
+        activity = analyzer.generate_activity(recording)
+
+        response = {
+            "recording_id": recording_id,
+            "activity": activity
+        }
+        return jsonify(response), 200
+
+    else:
+        return jsonify({"error": "Invalid recording_id"}), 400
 
 
 @app.route('/stats/users/<int:user_id>', methods=['GET'])

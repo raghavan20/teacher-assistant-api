@@ -5,6 +5,7 @@ from pprint import pformat
 from utils.gemini_api_methods import initialize_model, upload_file, delete_all_files
 from analysis.metrics import get_dashboard_metrics
 from utils.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
+from utils.prompt_plan_ws_quiz import content_prompt
 from utils.utils import get_logger
 
 logger = get_logger()
@@ -61,3 +62,51 @@ class RecordingAnalyzer:
 
         return recording
 
+    def generate_worksheet(self, recording: Recording):
+
+        model = initialize_model(name='gemini-2.0-flash',
+                                 temperature=1,
+                                 top_k=5,
+                                 top_p=0.5)
+        try:
+            cp = content_prompt(grade=recording.grade,
+                                subject=recording.subject,
+                                topic=recording.r_topics_covered,
+                                language=recording.language)
+
+            prompt = cp.create_worksheet_prompt()
+
+            result = model.generate_content(prompt)
+            result_dict = json.loads(result.text)
+
+            html_conversion_prompt = "convert given dict to HTML code for web rendering. dict:{}".format(result_dict)
+            html_result = model.generate_content(html_conversion_prompt)
+            html_result_dict = json.loads(html_result.text)
+
+            return html_result_dict
+
+        except Exception as e:
+            print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))
+
+    def generate_activity(self, recording: Recording):
+
+        model = initialize_model(name='gemini-2.0-flash',
+                                 temperature=1,
+                                 top_k=5,
+                                 top_p=0.5)
+        try:
+            cp = content_prompt(grade=recording.grade, subject=recording.subject,
+                                topic=recording.r_topics_covered, language=recording.language)
+            prompt = cp.create_quiz_prompt(quiz_questions_numbers=10)
+
+            result = model.generate_content(prompt)
+            result_dict = json.loads(result.text)
+
+            html_conversion_prompt = "convert given dict to HTML code for web rendering. dict:{}".format(result_dict)
+            html_result = model.generate_content(html_conversion_prompt)
+            html_result_dict = json.loads(html_result.text)
+
+            return html_result_dict
+
+        except Exception as e:
+            print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))

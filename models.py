@@ -4,6 +4,7 @@ from utils.utils import Registry
 
 
 class Recording(Registry.s_db.Model):
+
     __tablename__ = 'recordings'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -12,6 +13,7 @@ class Recording(Registry.s_db.Model):
     user_id = Column(Integer, nullable=False)
     subject = Column(String(255), nullable=False)
     grade = Column(String(50), nullable=False)
+    language = Column(String(50), nullable=False)
 
     r_full_response_json = Column(JSON, nullable=True)
     r_overall_score = Column(Float, nullable=True)
