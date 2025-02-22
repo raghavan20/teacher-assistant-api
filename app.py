@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort, Response
 from sqlalchemy.orm import load_only
-from sqlalchemy import func
+from sqlalchemy import func, and_
 from utils.db_utils import *
 from utils.utils import Registry
 app = Flask(__name__)
@@ -16,12 +16,23 @@ analyzer = RecordingAnalyzer()
 
 @app.route('/recordings', methods=['GET'])
 def list_recordings():
-    recordings = Recording.query.with_entities(
+    user_id = request.args.get("user_id", type=int)
+    query = Recording.query.with_entities(
         Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
         Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
         Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
         Recording.r_depth, Recording.r_style
-    ).all()
+    )
+
+    filters = []
+    if user_id is not None:
+        filters.append(Recording.user_id == user_id)
+
+    if filters:
+        query = query.filter(and_(*filters))
+
+    recordings = query.all()
+
     return jsonify([{
         "id": recording.id,
         "timestamp": recording.timestamp.isoformat(),
