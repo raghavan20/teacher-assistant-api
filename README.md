@@ -7,7 +7,7 @@ This Flask application allows teachers to upload lecture recordings, analyze the
 - Python 3.10
 
 ```
-mkvirtualenv -p $(which python3.10) teacher-assistant-api
+mkvirtualenv -p $(which python3.11) teacher-assistant-api
 ```
 
 ## Setup and Running
