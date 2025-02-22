@@ -36,6 +36,13 @@ def upload_file(recording_bytes):
     return uploaded_file
 
 
+def delete_all_files():
+    all_files = genai.list_files()
+    for i in all_files:
+        genai.delete_file(i.name)
+        print('File deleted {}'.format(i.name))
+
+
 def upload_all_files(directory='../data'):
     files_to_upload = [{'name': x.replace('.mp3', ''), "path": os.path.join(directory, x)} for x in
                        os.listdir(directory) if x.endswith('.mp3')]

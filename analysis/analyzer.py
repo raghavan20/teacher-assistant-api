@@ -2,7 +2,7 @@ from models import *
 import json
 from pprint import pformat
 
-from utils.gemini_api_methods import initialize_model, upload_file
+from utils.gemini_api_methods import initialize_model, upload_file, delete_all_files
 from analysis.metrics import get_dashboard_metrics
 from utils.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
 from utils.utils import get_logger
@@ -17,6 +17,8 @@ class RecordingAnalyzer:
                                  temperature=0.1,
                                  top_k=5,
                                  top_p=0.5)
+
+        delete_all_files()
         uploaded_file = upload_file(recording.recording_blob)
 
         try:
@@ -39,6 +41,7 @@ class RecordingAnalyzer:
             stats = get_dashboard_metrics(result_dict)
             result_file_content = {'predictions': result_dict, 'metrics': stats}
             suggestions_result = model.generate_content(create_postprocessing_prompt(result_file_content))
+
             suggestions_dict = json.loads(suggestions_result.text)
             suggestions = suggestions_dict['suggestions']
             result_file_content['suggestions'] = suggestions
