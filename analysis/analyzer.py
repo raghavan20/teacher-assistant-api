@@ -2,9 +2,9 @@ from models import *
 import json
 from pprint import pprint
 
-from analysis.gemini_api_methods import initialize_model, upload_file
+from utils.gemini_api_methods import initialize_model, upload_file
 from analysis.metrics import get_dashboard_metrics
-from analysis.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
+from utils.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
 
 
 class RecordingAnalyzer:

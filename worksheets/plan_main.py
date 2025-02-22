@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from gemini_api_methods import initialize_model
+from utils.gemini_api_methods import initialize_model
 from prompt_plan_ws_quiz import content_prompt
 
 if __name__ == "__main__":

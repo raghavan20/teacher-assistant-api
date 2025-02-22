@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify, abort, Response
-from db_utils import *
+from sqlalchemy.orm import load_only
+from sqlalchemy import func
+from utils.db_utils import *
+from utils.utils import Registry
 app = Flask(__name__)
 db = create_db(app)
 Registry.s_db = db
 
 from models import *
-from utils import Registry
+
 from analysis.analyzer import RecordingAnalyzer
 analyzer = RecordingAnalyzer()
 
@@ -144,6 +147,88 @@ def upload_recording():
     Registry.s_db.session.commit()
 
     return jsonify({"message": "Recording uploaded successfully", "recording_id": recording.id}), 201
+
+
+@app.route('/recordings/search', methods=['GET'])
+def search_recordings():
+    subject = request.args.get('subject')
+    grade = request.args.get('grade')
+
+    # Start query with selected columns only (excluding `recording_blob`)
+    query = db.session.query(Recording).options(
+        load_only(
+            Recording.id,
+            Recording.timestamp,
+            Recording.user_id,
+            Recording.subject,
+            Recording.grade,
+            Recording.r_overall_score,
+            Recording.r_structure,
+            Recording.r_depth,
+            Recording.r_style
+        )
+    )
+
+    # Apply filters
+    if subject:
+        query = query.filter(Recording.subject.ilike(f"%{subject}%"))
+    if grade:
+        query = query.filter(Recording.grade.ilike(f"%{grade}%"))
+
+    # Execute query
+    results = query.all()
+
+    # Convert results to JSON-friendly format
+    recordings_list = [
+        {
+            "id": rec.id,
+            "timestamp": rec.timestamp.isoformat(),
+            "user_id": rec.user_id,
+            "subject": rec.subject,
+            "grade": rec.grade,
+            "overall_score": rec.r_overall_score,
+            "structure": rec.r_structure,
+            "depth": rec.r_depth,
+            "style": rec.r_style
+        }
+        for rec in results
+    ]
+
+    return jsonify(recordings_list), 200
+
+
+@app.route('/stats/users/<int:user_id>', methods=['GET'])
+def get_user_stats(user_id):
+    # Query total lesson interactions
+    total_interactions = db.session.query(func.count(Recording.id)).filter(
+        Recording.user_id == user_id
+    ).scalar()
+
+    if total_interactions == 0:
+        return jsonify({"user_id": user_id, "streak": 0, "total_interactions": 0}), 200
+
+    # Get distinct recorded dates for the user, sorted in descending order
+    user_dates = db.session.query(
+        func.date(Recording.timestamp).label("record_date")
+    ).filter(Recording.user_id == user_id).distinct().order_by(
+        func.date(Recording.timestamp).desc()
+    ).all()
+
+    # Convert query result to a list of date objects
+    date_list = [record.record_date for record in user_dates]
+
+    # Calculate streak
+    streak = 1
+    for i in range(1, len(date_list)):
+        if (date_list[i - 1] - date_list[i]).days == 1:  # Consecutive day
+            streak += 1
+        else:
+            break  # Streak broken
+
+    return jsonify({
+        "streak": streak,
+        "total_interactions": total_interactions
+    }), 200
 
 if __name__ == '__main__':
     # Initialize database and create tables if not present

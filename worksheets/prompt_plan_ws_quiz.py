@@ -1,4 +1,4 @@
-from prompt_generation_methods import _get_pedagogy, _get_lesson_plan, _get_teaching_guidelines
+from utils.prompt_generation_methods import _get_pedagogy, _get_lesson_plan, _get_teaching_guidelines
 
 class content_prompt:
     def __init__(self, grade: int, subject: str, topic: str, state: str ='karnataka',

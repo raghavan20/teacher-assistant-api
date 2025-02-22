@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Float, LargeBinary, create_engine
+from sqlalchemy import Column, Integer, String, DateTime, JSON, Float, LargeBinary
 from datetime import datetime
-from utils import Registry
+from utils.utils import Registry
 
-from db_init import init_db
 
 class Recording(Registry.s_db.Model):
     __tablename__ = 'recordings'
