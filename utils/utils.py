@@ -3,6 +3,7 @@ import logging
 
 class Registry:
     s_db = None
+    app = None
 
 
 def get_logger(name="teacher-assistant-api"):

@@ -62,27 +62,27 @@ class RecordingAnalyzer:
 
         return recording
 
-    def generate_quiz(self, recording: Recording):
-
-        model = initialize_model(name='gemini-2.0-flash',
-                                 temperature=0.1,
-                                 top_k=5,
-                                 top_p=0.5)
-        try:
-            cp = content_prompt(grade=recording.grade,
-                                subject=recording.subject,
-                                topic=recording.r_topics_covered,
-                                language=recording.language)
-
-            prompt = cp.create_quiz_prompt(quiz_questions_numbers=5)
-
-            result = model.generate_content(prompt)
-            result_dict = json.loads(result.text)
-
-            return result_dict
-
-        except Exception as e:
-            print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))
+    # def generate_quiz(self, recording: Recording):
+    #
+    #     model = initialize_model(name='gemini-2.0-flash',
+    #                              temperature=0.1,
+    #                              top_k=5,
+    #                              top_p=0.5)
+    #     try:
+    #         cp = content_prompt(grade=recording.grade,
+    #                             subject=recording.subject,
+    #                             topic=recording.r_topics_covered,
+    #                             language=recording.language)
+    #
+    #         prompt = cp.create_quiz_prompt(quiz_questions_numbers=5)
+    #
+    #         result = model.generate_content(prompt)
+    #         result_dict = json.loads(result.text)
+    #
+    #         return result_dict
+    #
+    #     except Exception as e:
+    #         print('****************\nException:\n{}\n***************'.format(e, e.__traceback__))
 
     def generate_activity(self, recording: Recording):
 
