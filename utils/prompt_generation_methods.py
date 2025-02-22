@@ -117,7 +117,7 @@ def _get_lesson_plan(state: str, board: str, grade: int, subject: str, topic: st
             raise Exception('Key "{}" not found'.format(lesson_key))
         return description
     except Exception as e:
-        print('WARNING: Could not retrieve curriculum - {}'.format(e.__traceback__))
+        print('WARNING: Could not retrieve curriculum for key {}'.format(lesson_key))
         return ''
 
 

@@ -22,10 +22,25 @@ analyzer = RecordingAnalyzer()
 def list_recordings():
     user_id = request.args.get("user_id", type=int)
     query = Recording.query.with_entities(
-        Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
-        Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
-        Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
-        Recording.r_depth, Recording.r_style
+        Recording.id,
+        Recording.timestamp,
+        Recording.user_id,
+        Recording.subject,
+        Recording.grade,
+        Recording.topic,
+        Recording.state,
+        Recording.board,
+        Recording.district,
+        Recording.block,
+        Recording.language,
+        Recording.r_full_response_json,
+        Recording.r_overall_score,
+        Recording.r_suggestions_count,
+        Recording.r_topics_required,
+        Recording.r_topics_covered,
+        Recording.r_structure,
+        Recording.r_depth,
+        Recording.r_style
     )
 
     filters = []
@@ -43,6 +58,12 @@ def list_recordings():
         "user_id": recording.user_id,
         "subject": recording.subject,
         "grade": recording.grade,
+        "topic": recording.topic,
+        "state": recording.state,
+        "board": recording.board,
+        "district": recording.district,
+        "block": recording.block,
+        "language": recording.language,
         "r_full_response_json": recording.r_full_response_json,
         "r_overall_score": recording.r_overall_score,
         "r_suggestions_count": recording.r_suggestions_count,
@@ -103,10 +124,25 @@ def get_recording_blob(recording_id):
 @app.route('/recordings/<int:recording_id>', methods=['GET'])
 def get_recording(recording_id):
     recording = Recording.query.with_entities(
-        Recording.id, Recording.timestamp, Recording.user_id, Recording.subject, Recording.grade,
-        Recording.r_full_response_json, Recording.r_overall_score, Recording.r_suggestions_count,
-        Recording.r_topics_required, Recording.r_topics_covered, Recording.r_structure,
-        Recording.r_depth, Recording.r_style
+        Recording.id,
+        Recording.timestamp,
+        Recording.user_id,
+        Recording.subject,
+        Recording.grade,
+        Recording.topic,
+        Recording.state,
+        Recording.board,
+        Recording.district,
+        Recording.block,
+        Recording.language,
+        Recording.r_full_response_json,
+        Recording.r_overall_score,
+        Recording.r_suggestions_count,
+        Recording.r_topics_required,
+        Recording.r_topics_covered,
+        Recording.r_structure,
+        Recording.r_depth,
+        Recording.r_style
     ).filter_by(id=recording_id).first()
 
     if not recording:
@@ -118,6 +154,12 @@ def get_recording(recording_id):
         "user_id": recording.user_id,
         "subject": recording.subject,
         "grade": recording.grade,
+        "topic": recording.topic,
+        "state": recording.state,
+        "board": recording.board,
+        "district": recording.district,
+        "block": recording.block,
+        "language": recording.language,
         "r_full_response_json": recording.r_full_response_json,
         "r_overall_score": recording.r_overall_score,
         "r_suggestions_count": recording.r_suggestions_count,
@@ -145,6 +187,11 @@ def upload_recording():
     grade = request.form.get('grade')
     user_id = request.form.get('user_id')
     language = request.form.get('language')
+    topic = request.form.get('topic')
+    state = request.form.get('state')
+    board = request.form.get('board')
+    district = request.form.get('district')
+    block = request.form.get('block')
     analyze = request.form.get('analyze', 'true').lower() == 'true'
 
     if not subject or not grade or not user_id:
@@ -156,6 +203,11 @@ def upload_recording():
         user_id=int(user_id),
         subject=subject,
         grade=grade,
+        topic=topic,
+        state=state,
+        board=board,
+        district=district,
+        block=block,
         language=language
     )
 

@@ -26,12 +26,13 @@ def initialize_model(name='gemini-1.5-pro',
     return genai_model
 
 
-def upload_file(recording_bytes):
+def upload_file(recording_bytes, name = None):
     file_obj = io.BytesIO(recording_bytes)
 
     uploaded_file = genai.upload_file(
         file_obj,
-        mime_type='audio/mpeg'
+        mime_type='audio/mpeg',
+        name=name
     )
     return uploaded_file
 

@@ -14,6 +14,11 @@ class Recording(Registry.s_db.Model):
     subject = Column(String(255), nullable=False)
     grade = Column(String(50), nullable=False)
     language = Column(String(50), nullable=False)
+    topic = Column(String(200), nullable=False)
+    state = Column(String(50), nullable=False)
+    board = Column(String(50), nullable=False)
+    district = Column(String(100), nullable=False)
+    block = Column(String(100), nullable=False)
 
     r_full_response_json = Column(JSON, nullable=True)
     r_overall_score = Column(Float, nullable=True)

@@ -20,7 +20,10 @@ class RecordingAnalyzer:
                                  top_p=0.5)
 
         delete_all_files()
-        uploaded_file = upload_file(recording.recording_blob)
+
+        file_name = '{}-{}'.format(str.lower(recording.subject), datetime.strftime(datetime.now(), format('%d%m-%H%M')))
+        print(file_name)
+        uploaded_file = upload_file(recording.recording_blob, name=file_name)
 
         try:
             result = model.generate_content(
@@ -31,11 +34,11 @@ class RecordingAnalyzer:
 
             prompt = create_analysis_prompt(grade=recording.grade,
                                             subject=recording.subject,
-                                            topic='consumer_literacy',
-                                            state='DEL',
-                                            board='CBSE',
-                                            district='New Delhi',
-                                            block='Saket')
+                                            topic=recording.topic,
+                                            state=recording.state,
+                                            board=recording.board,
+                                            district=recording.district,
+                                            block=recording.block)
 
             result = model.generate_content(contents=[prompt, transcript, uploaded_file])
             result_dict = json.loads(result.text)
