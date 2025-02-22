@@ -64,7 +64,7 @@ def reanalyze_recording(recording_id):
     return jsonify({"message": "Recording uploaded successfully", "recording_id": recording.id}), 201
 
 
-@app.route('/recordings/<int:recording_id>/recording_blob', methods=['GET'])
+@app.route('/recordings/<int:recording_id>/blob', methods=['GET'])
 def get_recording_blob(recording_id):
     recording_blob = Recording.query.with_entities(
         Recording.recording_blob

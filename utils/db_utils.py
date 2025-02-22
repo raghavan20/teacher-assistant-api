@@ -1,15 +1,23 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import inspect
-from utils.utils import Registry
-
+import os
 
 def create_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/teaching_db'
+    # Read database configuration from environment variables, fallback to defaults
+    db_user = os.getenv('DB_USER', 'user')
+    db_password = os.getenv('DB_PASSWORD', 'password')
+    db_host = os.getenv('DB_HOST', 'localhost')
+    db_name = os.getenv('DB_NAME', 'teaching_db')
+
+    # Construct the database URI
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
+
+    # Initialize SQLAlchemy and migration
     db = SQLAlchemy(app)
     migrate = Migrate(app, db)
-    return db
 
+    return db
 
 def init_db(app, db):
     with app.app_context():

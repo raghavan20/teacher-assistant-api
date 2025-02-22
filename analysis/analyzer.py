@@ -1,13 +1,15 @@
 from models import *
 import json
-from pprint import pprint
+from pprint import pformat
 
 from utils.gemini_api_methods import initialize_model, upload_file
 from analysis.metrics import get_dashboard_metrics
 from utils.prompt_generation_methods import create_analysis_prompt, create_postprocessing_prompt
+from utils.utils import get_logger
 
-
+logger = get_logger()
 class RecordingAnalyzer:
+
     def analyze(self, recording: Recording):
         print('Analyzing: subject={}, grade={}'.format(recording.subject, recording.grade))
 
@@ -31,8 +33,6 @@ class RecordingAnalyzer:
                                             board='CBSE',
                                             district='New Delhi',
                                             block='Saket')
-            # with open(prompt_filepath, 'w') as f:
-            #     f.write(prompt)
 
             result = model.generate_content(contents=[prompt, transcript, uploaded_file])
             result_dict = json.loads(result.text)
@@ -52,11 +52,9 @@ class RecordingAnalyzer:
             recording.r_depth = result_file_content['metrics']["lesson_quality_score"]
             recording.r_style = result_file_content['metrics']["teaching_guidelines_score"]
 
-
-            pprint('Got recording analysis:', recording)
-
+            logger.info("Got recording analysis:\n%s", pformat(recording))
         except Exception as e:
-            print('****************\nException:\n{}\n***************\n'.format(e, e.__traceback__))
+            logger.error("Exception occurred while analyzing recording", exc_info=True)
 
         return recording
 
