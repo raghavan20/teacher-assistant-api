@@ -26,34 +26,14 @@ def initialize_model(name='gemini-1.5-pro',
     return genai_model
 
 
-def upload_file(filepath: str, recording_bytes):
-    # uploaded_files = list(genai.list_files())
-    # uploaded_filenames = [x.display_name for x in uploaded_files]
-    # name = os.path.basename(filepath).replace('.mp3', '')
-    # if name not in uploaded_filenames:
-        # uploaded_file = genai.upload_file(filepath, name=name, display_name=name)
-
-    file_obj = io.BytesIO(recording_bytes)  # Convert bytes to a file-like object
+def upload_file(recording_bytes):
+    file_obj = io.BytesIO(recording_bytes)
 
     uploaded_file = genai.upload_file(
-        file_obj,  # Pass file object
+        file_obj,
         mime_type='audio/mpeg'
-        # file_name='recording_file',  # Set file name
     )
-
-    # file_bytearray = bytearray(recording_bytes)
-    #
-    # # Upload to Gemini LLM
-    # uploaded_file = genai.upload_file(
-    #     file=io.BytesIO(file_bytearray),
-    #     # name=file_name,
-    #     # display_name=file_name
-    # )
-
-    # print('Uploaded File: {}'.format(name))
     return uploaded_file
-    # else:
-    #     return [x for x in uploaded_files if x.display_name == name][0]
 
 
 def upload_all_files(directory='../data'):
