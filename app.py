@@ -212,8 +212,8 @@ def search_recordings():
     return jsonify(recordings_list), 200
 
 
-@app.route('/recordings/<int:recording_id>/worksheet', methods=['GET'])
-def generate_worksheet(recording_id):
+@app.route('/recordings/<int:recording_id>/quiz', methods=['GET'])
+def generate_quiz(recording_id):
 
     if recording_id:
         recording = Recording.query.with_entities(
@@ -226,11 +226,11 @@ def generate_worksheet(recording_id):
         if not recording:
             return jsonify({"error": "Recording not found"}), 404
 
-        worksheet = analyzer.generate_worksheet(recording)
+        quiz = analyzer.generate_quiz(recording)
 
         response = {
             "recording_id": recording_id,
-            "worksheet": worksheet
+            "quiz": quiz
         }
         return jsonify(response), 200
 
@@ -238,7 +238,7 @@ def generate_worksheet(recording_id):
         return jsonify({"error": "Invalid recording_id"}), 400
 
 
-@app.route('/recordings/<int:recording_id>/worksheet', methods=['GET'])
+@app.route('/recordings/<int:recording_id>/activity', methods=['GET'])
 def generate_activity(recording_id):
 
     if recording_id:
