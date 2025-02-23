@@ -34,9 +34,18 @@ python app.py
 docker-compose down
 ```
 
-### Build Docker image
+### Additional commands
+
 ```commandline
 sudo docker build . -t invokeed/teacher-assistant-api
+
+
+sudo docker run --rm --name teacher-assistant-api -d --env-file .env  -p 5000:5000  invokeed/teacher-assistant-api
+
+sudo docker stop teacher-assistant-api
+
+sudo docker ps
+sudo docker logs -f teacher-assistant-api
 ```
 
 ### Next Steps
