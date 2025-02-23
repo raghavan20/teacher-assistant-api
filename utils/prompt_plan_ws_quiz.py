@@ -124,6 +124,34 @@ class ContentPrompt:
         )
         return prompt
 
+    def create_activity_prompt(self):
+        template = '''
+
+        You are a classroom activity generator, who generates an interesting classroom activity given class, subject,
+        topic and language considering it is for schools in rural india with limited access to technology and fancy activity items.
+
+        Generate one classroom activity  for grade {grade} for {subject} on 
+        {topic} in {language} language. 
+
+        Keep the outputs strictly as below output_format_json format
+
+        output_format_json:
+        {{
+        "activity_name" : "A short name",
+        "material_needed" : "list materials required keeping rural india in consideration"
+        "description" "activity details"
+        }}   
+
+        '''
+
+        prompt = template.format(
+            grade=self.grade,
+            subject=self.subject,
+            topic=self.topic,
+            language=self.language
+        )
+
+        return prompt
 
 
 

@@ -48,7 +48,7 @@ def generate_activity(recording: Recording):
         result = model.generate_content(prompt)
         result_dict = json.loads(result.text)[0]
 
-        return jsonify(result_dict)
+        return result_dict
 
     except Exception as e:
         logger.error("Exception occurred while analyzing recording", exc_info=True)
