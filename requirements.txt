@@ -4,11 +4,11 @@ psycopg2-binary==2.9.9
 openai==1.3.6
 Werkzeug==3.0.1
 requests==2.31.0
-gunicorn==21.2.0
 Flask-Migrate==4.0.5
 flask-cors
 python-dotenv==1.0.1
 pyyaml
+gunicorn>=23,<24
 
 
 google-generativeai==0.8.4

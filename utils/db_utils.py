@@ -8,10 +8,11 @@ def create_db(app):
     db_user = os.getenv('DB_USER', 'user')
     db_password = os.getenv('DB_PASSWORD', 'password')
     db_host = os.getenv('DB_HOST', 'localhost')
+    db_port = os.getenv('DB_PORT', '5432')
     db_name = os.getenv('DB_NAME', 'teaching_db')
 
     # Construct the database URI
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 
     # Initialize SQLAlchemy and migration
     db = SQLAlchemy(app)
