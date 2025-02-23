@@ -192,7 +192,7 @@ def upload_recording():
     board = request.form.get('board')
     district = request.form.get('district')
     block = request.form.get('block')
-    analyze = request.form.get('analyze', 'true').lower() == 'true'
+    analyze = request.args.get("analyze", default='true', type=str) == 'true'
 
     if not subject or not grade or not user_id:
         return jsonify({"error": "Missing required fields: subject, grade, user_id"}), 400
