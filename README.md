@@ -34,6 +34,11 @@ python app.py
 docker-compose down
 ```
 
+### Build Docker image
+```commandline
+sudo docker build . -t invokeed/teacher-assistant-api
+```
+
 ### Next Steps
 
 - Host with Railway
