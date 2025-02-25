@@ -306,9 +306,9 @@ if __name__ == '__main__':
 
     from quiz.routes import quiz_routes
     from activity.routes import activity_routes
-    from lesson_plan.routes import lesson_route
+    from lesson_plan.routes import lesson_plan_routes
 
-    blueprints = [quiz_routes, activity_routes, lesson_route]
+    blueprints = [quiz_routes, activity_routes, lesson_plan_routes]
 
     for bp in blueprints:
         app.register_blueprint(bp)
