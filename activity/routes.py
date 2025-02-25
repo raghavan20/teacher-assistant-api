@@ -46,7 +46,10 @@ def generate_activity(recording: Recording):
         prompt = cp.create_activity_prompt()
 
         result = model.generate_content(prompt)
-        result_dict = json.loads(result.text)[0]
+        try:
+            result_dict = json.loads(result.text)[0]
+        except:
+            result_dict = json.loads(result.text)
 
         return result_dict
 
