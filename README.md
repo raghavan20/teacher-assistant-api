@@ -34,23 +34,49 @@ python app.py
 docker-compose down
 ```
 
-### Additional commands
 
-```commandline
+### Deploy as container
+
+Build container image:
+```
 sudo docker build . -t invokeed/teacher-assistant-api
+```
 
+Pass Env:
 
-sudo docker run --rm --name teacher-assistant-api -d --env-file .env  -p 5000:5000  invokeed/teacher-assistant-api
+create .env file when running as container 
 
+```
+DB_USER=<user>
+DB_PASSWORD=<pass>
+DB_HOST=localhost # Or the actual host if not local
+DB_NAME=teaching_db
+DB_PORT=5432
+```
+
+Launch container:
+
+```bash
 sudo docker stop teacher-assistant-api
 
+sudo docker run --rm --name teacher-assistant-api -d \
+  --env-file .env \
+  -v $(pwd)/secret.yaml:/app/secret.yaml \
+  -p 5000:5000 \
+  invokeed/teacher-assistant-api
+```
+
+Specify Gemini key:
+
+Create secret.yaml to host the Gemini API key
+
+```
+GEMINI_API_KEY: "KEY"
+```
+
+Other helpful commands:
+
+```bash
 sudo docker ps
 sudo docker logs -f teacher-assistant-api
 ```
-
-### Next Steps
-
-- Host with Railway
-- Extract any configs to envs
-- Link to Gemini for a few routes
-
