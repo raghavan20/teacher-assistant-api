@@ -15,13 +15,13 @@ class ContentPrompt:
         self.language = language
         return
 
-    def create_lesson_plan_prompt(self, class_duration: int = 30):
+    def create_lesson_plan_prompt(self, lesson_duration: int = 60):
         template = '''
         You are teacher's helpful assistant that creates lesson plan for given grade , topic, duration,
         pedagogy , board and langauge
 
-        Generate lesson plan for grade {grade} for {subject} on  {topic} topic for duration {class_duration}
-        minutes for {board} board in {language} language.
+        Generate lesson plan for grade {grade} for {subject} on {topic} topic for a total lesson duration of {lesson_duration}
+        minutes in {language} language.
         Ensure that lesson plan adhere to pedagogy structure and teaching guidelines given below and interactive in nature
 
         Pedagogy Structure: 
@@ -30,16 +30,19 @@ class ContentPrompt:
         Teaching Guidelines: 
         {teaching_guidelines}
 
-        output json structure should be on the basis of pedagogy structure . 
+        Output JSON structure should be on the basis of pedagogy structure.
+        
         Keep all examples in indian context assuming rural India with limited access of tools & technology.
+        
+        It is not necessary that all steps of the pedagogy are followed in the lesson since there is often not enough 
+        time for all activities within the same lesson.
 
         {{
-         "Engage": <>
-         "Explore": <>
-         "Explain": <>
-         "Elaborate" : <>
-         "Evaluate" : <>
-
+         "lesson_plan": [
+            {{ "duration": <section duration in minutes>, "description": <string>, "pedagogy_step": <string> }},
+            {{ "duration": <section duration in minutes>, "description": <string>, "pedagogy_step": <string> }},
+            ...
+            ]
         }}
 
 
@@ -52,8 +55,7 @@ class ContentPrompt:
         prompt = template.format(grade=self.grade,
                                  subject=self.subject,
                                  topic=self.topic,
-                                 class_duration=class_duration,
-                                 board=self.board,
+                                 lesson_duration=lesson_duration,
                                  language=self.language,
                                  pedagogy=pedagogy_context,
                                  teaching_guidelines=teaching_guidelines_context
